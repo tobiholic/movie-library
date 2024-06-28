@@ -1,5 +1,4 @@
 import React from 'react';
-
 interface Probs {
   children: string;
   color?: 'primary' | 'success' | 'danger';

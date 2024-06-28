@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from './ListGroup.module.css';
 
 //making components reusable
 // List with colors, names etc. No need to creat a separate component, data can be passed in like in a function.
@@ -42,8 +43,8 @@ function ListGroup({ heading, items, onSelectItem }: Probs) {
       {/*Conditional Rendering*/}
       {items.length === 0 && <p>no items found.</p>}
 
-      {/*Looping through array*/}
-      <ul className='list-group'>
+      {/*Looping through array & styling with modules*/}
+      <ul className={[styles.listGroup, styles.container].join(' ')}>
         {items.map((item, index) => (
           <li
             key={item}
