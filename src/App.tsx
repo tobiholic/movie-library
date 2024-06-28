@@ -1,63 +1,80 @@
-import './App.css';
-import ListGroup from './components/ListGroup/ListGroup';
-import Alert from './components/Alert';
-import ButtonAlert from './components/ButtonAlert';
 import { useState } from 'react';
+import './App.css';
 
-const items = [
-  'New York',
-  'Berlin',
-  'Munich',
-  'Nuermberg',
-  'Düsseldorf',
-  'Vienna',
-  'Hamburg',
-];
-
-const handleSelectItem = (item: string) => {
-  console.log(item);
-};
-
+//Updating arrays
 function App() {
-  //hook for state management of the alert. Only show when true.
-  const [alertVisible, setAlertVisibility] = useState(false);
+  const [tags, setTags] = useState(['happy', 'cheerful']);
 
-  return (
-    <>
-      <div>
-        <ListGroup
-          heading='List Group'
-          items={items}
-          onSelectItem={handleSelectItem}
-        ></ListGroup>
-        <br />
-        {alertVisible && (
-          <Alert
-            color='success'
-            onClose={() => setAlertVisibility(false)}
-          >
-            <h1>Yes!</h1>
-            <hr />
-            <h3>You are getting there, keep going!</h3>
-            <p>
-              Everyone started small. Lorem ipsum dolor sit amet, consectetur
-              adipisicing elit. Architecto ea quibusdam eaque asperiores ipsum
-              odit sit enim corporis est tempora voluptatem aperiam repudiandae
-              quas molestiae doloribus, ducimus beatae explicabo? Suscipit.
-            </p>
-          </Alert>
-        )}
-        <ButtonAlert
-          color='primary'
-          onClick={() => {
-            setAlertVisibility(true);
-          }}
-        >
-          <span>See how good you are?</span>
-        </ButtonAlert>
-      </div>
-    </>
-  );
+  const handleClick = () => {
+    // add
+    setTags([...tags, 'exciting']);
+
+    // remove
+    setTags(tag.filter((tag) => tag !== 'happy'));
+
+    // update
+    setTags(tags.map((tag) => (tag === 'happy' ? 'happiness' : tag)));
+  };
+
+  return <button onClick={handleClick}>Add array</button>;
 }
 
+//updating nested objects
+// function App() {
+//   const [customer, setCustomer] = useState({
+//     name: 'John',
+//     address: {
+//       city: 'San Francisco',
+//       zipCode: 9411,
+//     },
+//   });
+
+//   const handleClick = () => {
+//     setCustomer({
+//       ...customer,
+//       address: { ...customer.address, zipCode: 94002 },
+//     });
+//   };
+
+//   return (
+//     <>
+//       <div>
+//         <button onClick={handleClick}>udpate zip</button>
+//         {customer.address.zipCode}
+//       </div>
+//     </>
+//   );
+// }
+
+//updateding objects
+// function App() {
+//   const [drink, setDrink] = useState({
+//     title: 'Americano',
+//     price: 5,
+//   });
+
+//   //updating objects
+//   const handleClick = () => {
+//     const newDrink = {
+//       //if more proberties, use spread ... operator. Copies all the proberties
+//       ...drink,
+//       price: 6,
+//     };
+//     setDrink(newDrink);
+
+//     //in this example, new object not necassary. Also
+//     //setDrink({...drink, price: 6})
+//   };
+
+//   return (
+//     <>
+//       <div>
+//         {drink.price}
+//         <br />
+//         <br />
+//         <button onClick={handleClick}>udpate price</button>
+//       </div>
+//     </>
+//   );
+// }
 export default App;
