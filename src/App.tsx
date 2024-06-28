@@ -1,8 +1,9 @@
 import './App.css';
-import ListGroup from './components/ListGroup/ListGroup';
+import ListGroup from './components/ListGroup';
 import Alert from './components/Alert';
 import ButtonAlert from './components/ButtonAlert';
 import { useState } from 'react';
+import { BsBalloonHeart } from 'react-icons/bs';
 
 const items = [
   'New York',
@@ -55,6 +56,10 @@ function App() {
         >
           <span>See how good you are?</span>
         </ButtonAlert>
+        <BsBalloonHeart
+          color='red'
+          size='30'
+        />
       </div>
     </>
   );
