@@ -1,74 +1,25 @@
-import { useState } from 'react';
 import './App.css';
-import { Immer } from 'immer';
+import ExpandableText from './components/ExpandableText';
 
 function App() {
-  //Exercise 1: updating object with useState
-  const [game, setGame] = useState({
-    id: 1,
-    player: {
-      name: 'John',
-      age: 30,
-    },
-  });
-  const handleClick = () => {
-    setGame({ ...game, player: { ...game.player, name: 'Tobias' } });
-  };
-
-  //Exercise 2
-  const [pizza, setPizza] = useState({
-    name: 'Spicy Pepperoni',
-    toppings: ['Mushroom'],
-  });
-
-  const handleClick2 = () => {
-    setPizza({ ...pizza, toppings: [...pizza.toppings, 'cheese'] });
-  };
-
-  //Exercise 3
-  const [cart, setCart] = useState({
-    discount: 0.1,
-    items: [
-      { id: 1, title: 'Product 1', quantity: 1 },
-      { id: 2, title: 'Product 2', quantity: 1 },
-    ],
-  });
-
-  const handleClick3 = () => {
-    setCart({
-      ...cart,
-      items: cart.items.map((item) =>
-        item.id === 1 ? { ...item, quantity: item.quantity + 1 } : item
-      ),
-    });
-  };
-
-  //function with immer
-
-  // const updateCart = (cart, setCart) => {
-  //   setCart(
-  //     produce(cart, (draftCart) => {
-  //       const itemToUpdate = draftCart.items.find((item) => item.id === 1);
-  //       if (itemToUpdate) {
-  //         itemToUpdate.quantity += 1;
-  //       }
-  //     })
-  //   );
-  // };
-  return <div></div>;
+  return (
+    <div>
+      <ExpandableText maxChars={100}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro sint
+        aliquid a nemo quisquam eius doloribus enim quidem quibusdam odit ipsa
+        blanditiis incidunt hic, assumenda libero, repellendus eligendi esse
+        magnam officiis voluptas. Ullam soluta quibusdam accusamus aspernatur,
+        pariatur natus ut minus dolore error, qui modi nulla illo asperiores
+        incidunt voluptate doloribus expedita itaque exercitationem. Soluta
+        expedita eveniet ab. Fuga quae porro, impedit possimus reprehenderit
+        inventore aut distinctio incidunt quaerat debitis dignissimos voluptates
+        autem exercitationem qui doloremque culpa amet unde dolorum ab
+        cupiditate. Incidunt a assumenda vitae possimus accusantium quisquam
+        odit sed fugiat iste temporibus nam nulla, labore voluptatibus
+        laboriosam facilis!
+      </ExpandableText>
+    </div>
+  );
 }
 
 export default App;
-
-//Notes
-// const [tags, setTags] = useState(['happy', 'cheerful']);
-// const handleClick = () => {
-//   // add
-//   setTags([...tags, 'exciting']);
-
-//   // remove
-//   setTags(tags.filter((tag) => tag !== 'happy'));
-
-//   // update
-//   setTags(tags.map((tag) => (tag === 'happy' ? 'happiness' : tag)));
-// };
