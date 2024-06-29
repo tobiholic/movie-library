@@ -1,22 +1,48 @@
 import { useState } from 'react';
 import './App.css';
+import produce from 'immer';
 
 //Updating arrays
 function App() {
-  const [tags, setTags] = useState(['happy', 'cheerful']);
+  //Updating array of objects
+  const [bugs, setBugs] = useState([
+    { id: 1, title: 'Bug 1', fixed: false },
+    { id: 2, title: 'Bug 2', fixed: false },
+  ]);
 
+  const handleClickBug = () => {
+    //setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
+
+    setBugs(
+      produce((draft) => {
+        const bug = draft.find((bug) => bug.id === 1);
+        if (bug) bug.fixed = true;
+      })
+    );
+  };
+
+  const [tags, setTags] = useState(['happy', 'cheerful']);
   const handleClick = () => {
     // add
     setTags([...tags, 'exciting']);
 
     // remove
-    setTags(tag.filter((tag) => tag !== 'happy'));
+    setTags(tags.filter((tag) => tag !== 'happy'));
 
     // update
     setTags(tags.map((tag) => (tag === 'happy' ? 'happiness' : tag)));
   };
 
-  return <button onClick={handleClick}>Add array</button>;
+  return (
+    <div>
+      {bugs.map((bug) => (
+        <p key={bug.id}>
+          {bug.title} {bug.fixed ? 'Fixed' : 'New'}
+        </p>
+      ))}
+      <button onClick={handleClickBug}>Add array</button>
+    </div>
+  );
 }
 
 //updating nested objects
