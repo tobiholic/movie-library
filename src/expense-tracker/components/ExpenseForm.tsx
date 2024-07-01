@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import categories from '../categories';
 
+//validaiton with ZOD
 const schema = z.object({
   description: z
     .string()
@@ -12,7 +13,7 @@ const schema = z.object({
   amount: z
     .number({ invalid_type_error: 'Amount is requiered.' })
     .min(0.01)
-    .max(100_000),
+    .max(1000_0000),
   category: z.enum(categories, {
     errorMap: () => ({ message: 'Category is requiered.' }),
   }),
@@ -20,15 +21,25 @@ const schema = z.object({
 
 type ExpenseFormData = z.infer<typeof schema>;
 
-const ExpenseForm = () => {
+interface Probs {
+  onSubmit: (data: ExpenseFormData) => void;
+}
+
+const ExpenseForm = ({ onSubmit }: Probs) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))} className="mb-5">
+    <form
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data), reset();
+      })}
+      className="mb-5"
+    >
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
