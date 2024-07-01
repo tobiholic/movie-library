@@ -1,62 +1,67 @@
-import React, { useState } from 'react';
-import { FormEvent, useRef } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React, { FormEvent, useRef, useState } from 'react';
 
-const schema = z.object({
-  name: z.string().min(3, { message: 'Name must be at least 3 characters.' }),
-  age: z.number({ invalid_type_error: 'Age filed is required.' }).min(18),
-});
-
-//define interface with ZOD
-type FormData = z.infer<typeof schema>;
-
-// variant ONE: not needed with zod
-// interface FormData {
-//   name: string;
-//   age: number;
-// }
+interface Probs {}
 
 const Forms = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
-  console.log(register('name'));
+  const [expense, setExpense] = useState({
+    description: '',
+    amount: '',
+    category: ['Groceries', 'Ultilities', 'Entertainment'],
+  });
+  const expenses = {};
 
-  const onSubmit = (data: FieldValues) => console.log(data);
+  const descripRef = useRef<HTMLInputElement>(null);
+  const amountRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLSelectElement>(null);
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    if (
+      descripRef.current !== null &&
+      amountRef.current !== null &&
+      categoryRef.current !== null
+    ) {
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='mb-3'>
-        <label htmlFor='name' className='form-label'>
-          Please enter your name
-        </label>
-        <input
-          {...register('name')}
-          id='name'
-          type='text'
-          className='form-control'
-        />
-        {errors.name && <p className='text-danger'>{errors.name.message}</p>}
-      </div>
-      <div className='mb-3'>
-        <label htmlFor='' className='form-label'>
-          Age
-        </label>
-        <input
-          {...register('age', { valueAsNumber: true })}
-          type='number'
-          className='form-control'
-        />
-        {errors.age && <p className='text-danger'>{errors.age.message}</p>}
-      </div>
-      <button disabled={!isValid} type='submit' className='btn btn-primary'>
-        send it
-      </button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <div className='mb-3'>
+          <label htmlFor='description'>Description</label>
+          <input
+            ref={descripRef}
+            type='text'
+            id='description'
+            className='form-control'
+          />
+        </div>
+        <div className='mb-3'>
+          <label htmlFor=''>Amount</label>
+          <input
+            ref={amountRef}
+            type='number'
+            id='amount'
+            className='form-control'
+          />
+        </div>
+        <div className='mb-3'>
+          <label htmlFor='category'>Category</label>
+          <select
+            ref={categoryRef}
+            id='category'
+            className='form-select'
+            aria-label='Default select example'
+          >
+            <option value='Choose your Category'>Choose your Category</option>
+            <option value='1'>Groceries</option>
+            <option value='2'>Utilities</option>
+            <option value='3'>Entertainment</option>
+          </select>
+        </div>
+        <button className='btn btn-primary'>Submit</button>
+      </form>
+    </>
   );
 };
 
