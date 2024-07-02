@@ -5,6 +5,9 @@ import axios, { CanceledError } from 'axios';
 interface User {
   id: number;
   name: string;
+  username?: string;
+  email?: string;
+  website?: string;
 }
 
 function App() {
@@ -39,14 +42,44 @@ function App() {
     return () => controller.abort();
   }, []);
 
+  //delete data
   const deleteUser = (user: User) => {
     const originalUsers = [...users];
     setUsers(users.filter((u) => u.id !== user.id));
+    axios.delete('https://jsonplaceholder.typicode.com/users/' + user.id).catch((err) => {
+      setError(err.message);
+      setUsers(originalUsers);
+    });
+  };
+
+  //add data
+  const addUser = () => {
+    const originalUsers = [...users];
+    const newUser = { id: 0, name: 'Tobias Schmid' };
+    setUsers([newUser, ...users]);
+
     axios
-      .delete('https://jsonplaceholder.typicode.com/users/' + user.id)
+      .post('https://jsonplaceholder.typicode.com/users', newUser)
+      .then(({ data: savedUser }) => {
+        setUsers([savedUser, ...users]);
+      })
+      .catch((response) => {
+        setError(response.message);
+        setUsers(originalUsers);
+      });
+  };
+
+  //update data
+  const updateUser = (user: User) => {
+    const defaultUsers = [...users];
+    const updatedUser = { ...user, name: user.name + '!' };
+    setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
+
+    axios
+      .patch('https://jsonplaceholder.typicode.com/users/' + user.id, updatedUser)
       .catch((err) => {
         setError(err.message);
-        setUsers(originalUsers);
+        setUsers(defaultUsers);
       });
   };
 
@@ -54,20 +87,31 @@ function App() {
     <>
       <div>
         {error && <p className="text-danger">{error}</p>}
-        {loading && <div className="spinner-border text-primary"></div>}
+        {loading && <div className="spinner-border text-success"></div>}
+        {!loading && (
+          <button className="btn btn-primary mb-4" onClick={addUser}>
+            Add user
+          </button>
+        )}
+
         <ul className="list-group">
           {users.map((users) => (
-            <li
-              key={users.id}
-              className="list-group-item d-flex justify-content-between"
-            >
-              {users.name}
-              <button
-                className="btn btn-outline-danger"
-                onClick={() => deleteUser(users)}
-              >
-                Delete
-              </button>
+            <li key={users.id} className="list-group-item d-flex justify-content-between">
+              {users.name} / {users.username} / {users.email} / {users.website}
+              <div>
+                <button
+                  className="btn btn-outline-success mx-1"
+                  onClick={() => updateUser(users)}
+                >
+                  Update
+                </button>
+                <button
+                  className="btn btn-outline-danger"
+                  onClick={() => deleteUser(users)}
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>
