@@ -23,6 +23,7 @@ function App() {
   return (
     <div>
       <div className="mb-3">
+        <h1 className="mb-4">Expense Tracker</h1>
         <ExpenseForm
           onSubmit={(newExpense) =>
             setExpenses([
