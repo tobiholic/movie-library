@@ -39,9 +39,28 @@ function App() {
     return () => controller.abort();
   }, []);
 
+  const addUser = () => {
+    const originalUsers = [...user];
+    const newUser = { id: 0, name: 'Tobias Schmid' };
+    setUser([newUser, ...user]);
+
+    axios
+      .post('https://jsonplaceholder.typicode.com/xusers', newUser)
+      .then(({ data: savedUser }) => {
+        setUser([savedUser, ...user]);
+      })
+      .catch((response) => {
+        setError(response.message);
+        setUser(originalUsers);
+      });
+  };
+
   return (
     <>
       <div>
+        <button className="btn btn-primary mb-4" onClick={addUser}>
+          Add User
+        </button>
         {error && <p className="text-danger">{error}</p>}
         {loading && <div className="spinner-border text-primary"></div>}
         <ul>
