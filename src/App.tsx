@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 //Defining attributes for users to show
 interface User {
@@ -14,13 +14,18 @@ function App() {
   const [error, setError] = useState('');
 
   //callback function Effect Hook to fetch data with axios
+
   useEffect(() => {
-    const users = axios
-      .get<User[]>('https://jsonplaceholder.typicode.com/xusers')
-      .then((res) => setUser(res.data))
-      .catch((err) => {
-        setError(err.message);
-      });
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get<User[]>(
+          'https://jsonplaceholder.typicode.com/users'
+        );
+        setUser(response.data);
+      } catch (err) {
+        setError((err as AxiosError).message);
+      }
+    };
   }, []);
 
   return (
